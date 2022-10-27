@@ -121,7 +121,7 @@ def exercise10(*argv):
 
 
 def sort_key(e):
-    return e[:][1][2]
+    return e[1][2]
 
 
 def exercise11(tuples):
