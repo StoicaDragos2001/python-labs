@@ -31,8 +31,13 @@ def exercise3(dict1, dict2):
     return result
 
 
-def build_xml_element(tag, content, href, _class, id):
-    return '<' + tag + ' href=\\' + '"' + href + ' \\ ' + '"' + '_class = \\' + '" ' + _class + ' \\ "id = \\" ' + id + ' \\ "> ' + content + ' </' + tag + '>'
+def build_xml_element(tag, content, **kwargs):
+    result = '<' + tag + ' '
+    for key, value in kwargs.items():
+        result += key + ' = \\ ' + value + ' \\ '
+    result_ending = '>\n\t' + content + ' \n</' + tag + '>'
+    result += result_ending
+    return result
 
 
 def exercise5(rules, dict):
@@ -98,7 +103,7 @@ if __name__ == '__main__':
     dictionary2 = {'programare': {'Python': 'laborator', 'sala': {'nume': 'C403', 'etaj': 2}}, 'random': [1, 2, 3]}
     print(f"exercise 3: {exercise3(dictionary1, dictionary2)}")
     print(
-        f'exercise 4: {build_xml_element("a", "Hello there", href="http://python.org", _class="my-link", id="someid")}')
+        f'exercise 4: \n{build_xml_element("a", "Hello there", href="http://python.org", _class="my-link", id="someid")}')
     r = {("key1", "come", "inside", "out"), ("key2", "this", "middle", "valid")}
     d = {"key1": "come inside, it's too cold out", "key2": "this middle is valid"}
     print(f"exercise 5: {exercise5(r, d)}")
