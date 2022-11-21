@@ -40,6 +40,20 @@ def exercise5(path, attrs):
     return to_return
 
 
+def censor(s):
+    if re.match("^[aeiou].*[aeiou]$", s.group(0)):
+        return ''.join(["*" if i%2==1 else s.group(0)[i] for i in range(len(s.group(0)))])
+    return s.group(0)
+
+def exercise6(input_text):
+    return re.sub("\w+", censor, input_text)
+
+
+def exercise7(cnp):
+    #source: https://ro.wikipedia.org/wiki/Cod_numeric_personal_(Rom%C3%A2nia)
+    return "Valid CNP" if re.match("^[1-8]\d\d(0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3\d)(0[1-9]|1\d|2\d|3\d|4[0-8]|5[1-2])\d\d\d\d", cnp) else "Not a valid CNP."
+
+
 if __name__ == '__main__':
     print(f'exercise 1:\n{exercise1("Bla123 123 blabla bla1 bla 1")}')
     regex_string = "[\w\.-]+@[\w\.-]+"
@@ -52,3 +66,6 @@ if __name__ == '__main__':
         f'exercise 4:\n{exercise4(local_path + "/random.xml", {"class": "url", "name": "url-form", "data-id": "item"})}')
     print(
         f'exercise 5:\n{exercise5(local_path + "/random.xml", {"class": "url", "name": "url-form", "data-id": "item"})}')
+    print(f'exercise 6:\n{exercise6("This is some random example for the exercise")}')
+    print(f'exercise 7:\n{exercise7("1460913400088")}')
+    
