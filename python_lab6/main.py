@@ -2,8 +2,8 @@ import re
 import os
 
 
-def exercise1(text):
-    return re.findall("\w+", text)
+def exercise1(input_text):
+    return re.findall("\w+", input_text)
 
 
 def exercise2(expr, source, size):
@@ -11,9 +11,9 @@ def exercise2(expr, source, size):
     # return [match for match in re.findall(expr, source) if len(match) == size]
 
 
-def exercise3(text, list_of_regex):
+def exercise3(input_text, list_of_regex):
     to_return = []
-    for word in text.split():
+    for word in input_text.split():
         for regex in list_of_regex:
             if re.match(regex, word):
                 to_return.append(word)
@@ -42,16 +42,39 @@ def exercise5(path, attrs):
 
 def censor(s):
     if re.match("^[aeiou].*[aeiou]$", s.group(0)):
-        return ''.join(["*" if i%2==1 else s.group(0)[i] for i in range(len(s.group(0)))])
+        return ''.join(["*" if i % 2 == 1 else s.group(0)[i] for i in range(len(s.group(0)))])
     return s.group(0)
+
 
 def exercise6(input_text):
     return re.sub("\w+", censor, input_text)
 
 
 def exercise7(cnp):
-    #source: https://ro.wikipedia.org/wiki/Cod_numeric_personal_(Rom%C3%A2nia)
-    return "Valid CNP" if re.match("^[1-8]\d\d(0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3\d)(0[1-9]|1\d|2\d|3\d|4[0-8]|5[1-2])\d\d\d\d", cnp) else "Not a valid CNP."
+    # source: https://ro.wikipedia.org/wiki/Cod_numeric_personal_(Rom%C3%A2nia)
+    return "Valid CNP" if re.match(
+        "^[1-8]\d\d(0[1-9]|1[0-2])(0[1-9]|1\d|2\d|3\d)(0[1-9]|1\d|2\d|3\d|4[0-8]|5[1-2])\d\d\d\d",
+        cnp) else "Not a valid CNP."
+
+
+def exercise8(path):
+    to_return = []
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            condition1, condition2 = 0, 0
+            if re.match("^[aeiou].*[aeiou]$", os.path.splitext(file)[0]):
+                condition1 = 1
+            with open(os.path.join(root, file), encoding="utf-8") as f:
+                for line in f:
+                    for word in line.split():
+                        if re.match("^[aeiou].*[aeiou]$", word):
+                            condition2 = 1
+                            break
+            if condition1 and condition2:
+                to_return.append(">>" + file)
+            elif condition1 or condition2:
+                to_return.append(file)
+    return to_return
 
 
 if __name__ == '__main__':
@@ -68,4 +91,4 @@ if __name__ == '__main__':
         f'exercise 5:\n{exercise5(local_path + "/random.xml", {"class": "url", "name": "url-form", "data-id": "item"})}')
     print(f'exercise 6:\n{exercise6("This is some random example for the exercise")}')
     print(f'exercise 7:\n{exercise7("1460913400088")}')
-    
+    print(f'exercise 8:\n{exercise8(local_path + "/random_folder")}')
